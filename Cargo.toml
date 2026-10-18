@@ -39,7 +39,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 # Documentos e composição
 image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp"] }
-pdf-writer = "0.12"          # escreve o spool PDF (vetorial + imagens embutidas)
+pdf-writer = "0.15"          # escreve o spool PDF (vetorial + imagens embutidas)
 cosmic-text = "0.19"         # rasteriza .txt com shaping correto (mesmo motor da libcosmic)
 tempfile = "3"
 url = "2"
