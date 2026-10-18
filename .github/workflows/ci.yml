@@ -81,7 +81,7 @@ jobs:
           cp -r res "dist/$name/"
           tar -C dist -czf "dist/$name.tar.gz" "$name"
           echo "ARCHIVE=dist/$name.tar.gz" >> "$GITHUB_ENV"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: printerf-x86_64-linux
           path: ${{ env.ARCHIVE }}
