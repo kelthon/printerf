@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=PrinterF
+GenericName=Print Manager
+GenericName[pt_BR]=Gerenciador de impressão
+Comment=Preview, lay out and print PDFs, images and text through the system printer dialog
+Comment[pt_BR]=Pré-visualize, organize e imprima PDFs, imagens e textos pelo diálogo de impressão do sistema
+Exec=printerf %f
+Icon=io.github.kelthon.PrinterF
+Terminal=false
+Categories=Office;
+Keywords=print;printer;cups;epson;pdf;imprimir;impressora;
+MimeType=application/pdf;image/png;image/jpeg;image/webp;text/plain;
+StartupNotify=true

@@ -1,0 +1,4 @@
+# Mantém clippy alinhado com o `rust-version` do Cargo.toml.
+msrv = "1.85"
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true

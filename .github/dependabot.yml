@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+    # libcosmic é fixada por commit (git); atualize manualmente (docs/guides/development.md).
+    ignore:
+      - dependency-name: libcosmic
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

@@ -1,0 +1,86 @@
+[package]
+name = "printerf"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "PrinterF — gerenciador de impressão nativo para o COSMIC Desktop (CUPS + XDG Print Portal)"
+readme = "README.md"
+keywords = ["cups", "printing", "cosmic", "ipp", "epson"]
+categories = ["gui"]
+
+# ---------------------------------------------------------------------------
+# Dependências de sistema (Pop!_OS / Ubuntu):
+#
+#   sudo apt install build-essential pkg-config \
+#       libcups2-dev \            # cabeçalhos + libcups.so (FFI CUPS/IPP)
+#       libxkbcommon-dev libwayland-dev libexpat1-dev libfontconfig-dev \
+#       libfreetype-dev \         # libcosmic / iced
+#       poppler-utils             # pdftoppm/pdfinfo: rasterização de PDF
+#
+# Em runtime: cups, xdg-desktop-portal + xdg-desktop-portal-cosmic
+# (ou -gtk) para o diálogo de impressão nativo.
+# ---------------------------------------------------------------------------
+
+[lib]
+name = "printerf"
+path = "src/lib.rs"
+
+[[bin]]
+name = "printerf"
+path = "src/main.rs"
+
+[dependencies]
+# Assíncrono / erros / logs
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "process", "fs", "time"] }
+anyhow = "1"
+thiserror = "2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Documentos e composição
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp"] }
+pdf-writer = "0.12"          # escreve o spool PDF (vetorial + imagens embutidas)
+cosmic-text = "0.19"         # rasteriza .txt com shaping correto (mesmo motor da libcosmic)
+tempfile = "3"
+url = "2"
+
+# HTTP para a foto aleatória (picsum.photos); bloqueante, roda em spawn_blocking
+ureq = "3"
+
+# XDG Desktop Portal (diálogo de impressão nativo) via D-Bus
+ashpd = { version = "0.12", default-features = false, features = ["tokio"] }
+
+[dependencies.libcosmic]
+git = "https://github.com/pop-os/libcosmic"
+# Fixe um commit: a API da libcosmic ainda muda entre revisões.
+rev = "dc1cf9f00cbe2902a52166492654bb9fee8a73d1"
+default-features = false
+features = [
+    "a11y",
+    "dbus-config",
+    "multi-window",
+    "single-instance",
+    "tokio",
+    "wayland",
+    "winit",
+    "wgpu",
+    "xdg-portal",      # file chooser via portal
+]
+
+[profile.release]
+lto = "thin"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "process", "fs", "time"] }
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+missing_debug_implementations = "allow"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+# FFI: casts c_int <-> usize são intencionais e verificados nos limites.
+cast_possible_truncation = "allow"
+dbg_macro = "warn"
+todo = "warn"
+unwrap_used = "warn"
